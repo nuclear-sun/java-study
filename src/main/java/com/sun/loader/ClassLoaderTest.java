@@ -1,4 +1,4 @@
-package com.sun.artifact;
+package com.sun.loader;
 
 import java.util.ArrayList;
 import java.util.List;

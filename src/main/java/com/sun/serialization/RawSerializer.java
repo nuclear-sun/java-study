@@ -4,37 +4,36 @@ import java.io.*;
 
 public class RawSerializer {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
 
         System.out.println(System.getProperty("user.dir"));
 
+        //testSerializable();
 
-//        Person person = new Person("sun", 12);
-//        FileSerializer.writeObjectToFile(person, "zinc");
+        testSerializableWithNulls();
+
+
+    }
+
+
+    static void testSerializable() throws IOException, ClassNotFoundException {
+        Person person = new Person("sun", 12);
+        FileSerializer.writeObjectToFile(person, "zinc");
         Object object = FileSerializer.readObjectFromFile("zinc");
         System.out.println(object);
-
     }
 
-}
+    static void testSerializableWithNulls() throws IOException, ClassNotFoundException {
+        Stu stu = new Stu();
 
+        // serialization fails if called, success if not called
+        stu.set();
 
-class FileSerializer {
-
-    public static void writeObjectToFile(Object object, String file) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(object);
-        objectOutputStream.close();
+        FileSerializer.writeObjectToFile(stu, "zinc");
+        Object object = FileSerializer.readObjectFromFile("zinc");
+        System.out.println(((Stu)object).name);
     }
 
-    public static Object readObjectFromFile(String file) throws IOException, ClassNotFoundException {
-        FileInputStream inputStream = new FileInputStream(file);
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        Object object = objectInputStream.readObject();
-        objectInputStream.close();
-        return object;
-    }
 }
 
 
@@ -73,5 +72,22 @@ class Person implements Serializable {
     }
 }
 
+/**
+ * Any class not serializable
+ */
+class NotSerializable {
+}
 
+class Stu implements Serializable {
+
+    // if this is null, the object of Stu can be serialized !
+    NotSerializable object = null;
+
+    String name = "sun";
+
+    public void set() {
+        this.object = new NotSerializable();
+    }
+
+}
 

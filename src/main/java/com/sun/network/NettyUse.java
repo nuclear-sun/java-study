@@ -3,6 +3,7 @@ package com.sun.network;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -40,7 +41,7 @@ public class NettyUse {
         }
     }
 
-    public static void startServer() throws InterruptedException {
+    public static void startServer(String[] args) throws InterruptedException {
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(new NioEventLoopGroup(1))
@@ -58,12 +59,14 @@ public class NettyUse {
 
     }
 
-    public static void startClient() {
+    public static void startClient(String[] args) {
+
+        //new NioEventLoop()
 
     }
 
     public static void main(String[] args) throws InterruptedException {
-        startServer();
+        //startServer();
     }
 
 

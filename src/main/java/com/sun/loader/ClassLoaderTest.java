@@ -15,27 +15,7 @@ public class ClassLoaderTest {
 
         System.out.println("======================");
 
-        ClassLoader myClassLoader = new ClassLoader() {
-            @Override
-            public Class<?> loadClass(String name) throws ClassNotFoundException {
-                String fileName = name.substring(name.lastIndexOf(".") + 1) + ".class";
-
-                try {
-                    InputStream inputStream = getClass().getResourceAsStream(fileName);
-
-                    if(inputStream == null) {
-                        return super.loadClass(name);
-                    }
-
-                    byte[] bytes = new byte[inputStream.available()];
-                    inputStream.read(bytes);
-                    return defineClass(name, bytes, 0, bytes.length);
-                } catch (Exception e) {
-                    System.out.println("load class failed: " + e.getMessage());
-                    throw new ClassNotFoundException();
-                }
-            }
-        };
+        ClassLoader myClassLoader = new MyClassLoader();
 
         try {
             Class<?> aClass = myClassLoader.loadClass(ClassLoaderTest.class.getName());
